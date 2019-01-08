@@ -31,10 +31,9 @@
             </div>
             <div class="container">
                 <div class="row">
-                  <div id="questionDiv" class="col-md-12">
-                    <button type="button" class="btn btn-danger center-block" id="attackBtn">Start!</button> 
+                  <div id="timerDiv" class="col-md-12">
+                    <button type="button" class="btn btn-danger center-block" id="startBtn">Start!</button> 
                   </div>
-
                 </div>
           </div>
         </div>
@@ -42,22 +41,54 @@
 
       <script type="text/javascript">
 
-    var triviaObj = [
-{
-"question": "How many electrons does a hydrogen atom have?",
-"ans": "b",
-}]     
-            var letter;
-  
-            var guess = 10;
-  
-            var wins = 0;
-            var losses = 0;
-            var lives = 0;
-            var ourWord = [];
-            var used = [];   
-            var correctPickCount = 0;   
-        
+      var trivQues = {
+          "question1" : {
+            ques: "How many electrons does a hydrogen atom have?",
+            ans: 1,
+            wrongAns1: 8,
+            wrongAns2: 20
+          },
+          "question2" : {
+            ques: "A blunderbuss is an obsolete type of what?",
+            ans: "firearm",
+            wrongAns1: "building",
+            wrongAns2: "movie"
+          }
+        }
+
+    // VARIABLES and functions for timer
+    var intervalId;
+    var number = 30;
+    var clockRunning = false;
+    $("#startBtn").on("click", function() {
+      $("#startBtn").hide();
+      $("#timerDiv").html("<h2 class='text-center'>" + number + "</h2>");
+      run();
+    });
+    
+    function run() {
+      clearInterval(intervalId);
+      intervalId = setInterval(decrement, 1000);
+    }
+
+    //  The decrement function.
+    function decrement() {
+
+      number--;
+      $("#timerDiv").html("<h2 class='text-center'>" + number + "</h2>");
+
+      if (number === 0) {
+        alert("Time's Up!");
+      }
+    }
+    
+      function start() {
+
+          if (!clockRunning) {
+            intervalId = setInterval(count, 1000);
+            clockRunning = true;
+          }
+        }
         // initialize stuff when doc loads
         $(document).ready(function(){
 
