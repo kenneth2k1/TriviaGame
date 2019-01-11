@@ -16,7 +16,7 @@
     <script type="text/javascript" src="assets/js/game.js"></script>
 
 
-<title>Street Fighter RPG</title>
+<title>It's Trivia!</title>
 </head>
 <body>
 
@@ -27,7 +27,6 @@
               <h1 class="text-center">The Best Trivia Game Ever!</h1>
               <h3 class="text-center">Timed questions, 30 seconds for each question. </h3>
               <h3 class="text-center">Click the start button to begin!</h3>
-              <!-- <h2 class="text-center"><span id="hangWord"><strong> </strong></span></h2> -->
             </div>
             <div class="container">
                 <div class="row">
@@ -35,35 +34,75 @@
                     <button type="button" class="btn btn-danger center-block" id="startBtn">Start!</button> 
                   </div>
                 </div>
+                <div class="row">
+                  <div id="quesDiv" class="col-md-12">
+
+                  </div>
+                </div>
+                <div class="row">
+                    <div id="ansDiv" class="col-md-12">
+                      
+                    </div>
+                  </div>
           </div>
         </div>
       </div>
 
-      <script type="text/javascript">
+    <script type="text/javascript">
 
       var trivQues = {
-          "question1" : {
+          1 : {
             ques: "How many electrons does a hydrogen atom have?",
-            ans: 1,
-            wrongAns1: 8,
-            wrongAns2: 20
+            ans: "a: 1",
+            wrongAns1: "b: 8",
+            wrongAns2: "c: 20"
           },
-          "question2" : {
+          2 : {
             ques: "A blunderbuss is an obsolete type of what?",
-            ans: "firearm",
-            wrongAns1: "building",
-            wrongAns2: "movie"
+            ans: "a: firearm",
+            wrongAns1: "b: building",
+            wrongAns2: "c: movie"
+          },
+          3 : {
+            ques: "question 3?",
+            ans: "ans3",
+            wrongAns1: "wrong1",
+            wrongAns2: "wrong2"
           }
         }
 
-    // VARIABLES and functions for timer
-    var intervalId;
-    var number = 30;
-    var clockRunning = false;
+      // VARIABLES and functions for timer
+      var intervalId;
+      var timerNum = 30;
+      var clockRunning = false;
+      var currQues = 1;
+
     $("#startBtn").on("click", function() {
-      $("#startBtn").hide();
-      $("#timerDiv").html("<h2 class='text-center'>" + number + "</h2>");
-      run();
+        $("#startBtn").hide();
+        $("#timerDiv").html("<h2 class='text-center'>" + timerNum + "</h2>");
+        
+        $("#quesDiv").html("<h2 class='text-center'>" + JSON.stringify(trivQues[currQues].ques) + "</h2>");
+        run();
+
+        for (var key in trivQues){
+          if(trivQues.hasOwnProperty(key)){
+            $("#ansDiv").append("<h2 class='text-center'>" + JSON.stringify(trivQues[1].ques) + "</h2>");
+          }
+        }
+        // for(var key in trivQues){
+        //   if(trivQues.hasOwnProperty(key)){
+        //     $("#quesDiv").html("<h2 class='text-center'>" + JSON.stringify(trivQues[1].ques) + "</h2>");
+        //     //$("#ansDiv").html("<h2 class='text-center'>" + timerNum + "</h2>");
+        //     run();
+        //   }
+        // }
+
+        // for (var key in trivQues) {
+        //     if (trivQues.hasOwnProperty(key)) {
+        //         console.log(key + " -> " + JSON.stringify(trivQues[key].ques));
+        //     }
+        // }
+
     });
     
     function run() {
@@ -74,81 +113,24 @@
     //  The decrement function.
     function decrement() {
 
-      number--;
-      $("#timerDiv").html("<h2 class='text-center'>" + number + "</h2>");
+      timerNum--;
+      $("#timerDiv").html("<h2 class='text-center'>" + timerNum + "</h2>");
 
-      if (number === 0) {
+      if (timerNum === 0) {
         alert("Time's Up!");
       }
     }
     
-      function start() {
+    function start() {
 
-          if (!clockRunning) {
-            intervalId = setInterval(count, 1000);
-            clockRunning = true;
-          }
+        if (!clockRunning) {
+          intervalId = setInterval(count, 1000);
+          clockRunning = true;
         }
-        // initialize stuff when doc loads
-        $(document).ready(function(){
+      }
+      
+      $(document).ready(function(){
 
-          rWord = words[Math.floor(Math.random() * words.length)];
-          console.log(rWord);  
-            reset();  
-
-            for (i=0; i < rWord.length; i++){
-              ourWord.push("_");
-            }
-
-            $("#hangWord").text(ourWord.join(" "));
-
-        
-        function reset() {
-          // lives = guess;     
-           rWord.length = 0;  //random word to be guessed
-            
-           letter = "";
-  
-           guess = 10;
-  
-           wins = 0;
-           losses = 0;
-           lives = 0;
-           ourWord.length = 0;
-           used.length = 0;                                   
-        };
-
-  document.onkeyup = function(event) {    
-  var letter = event.key ;             //defines the letter being guessed via a key press
-  console.log(letter) ; //109 console log error
-  // document.getElementById("#").append(letter);  
-            
-            if(rWord.indexOf(letter) != -1){
-              correctPickCount++;
-              for(var i=0; i<rWord.length; i++){
-                if(rWord[i] == letter) 
-                  ourWord[i] = rWord[i];
-                  $("#hangWord").text(ourWord.join(" "));
-              }
-              //117 console log error
-            if(correctPickCount == ourWord.length){
-                $(".modal-title").text("Congratulations!");
-                $(".modal-body").text("You won! Let's play again, or cancel");
-                $("#introModal").css("display", "block");
-              }
-            } else {
-              guess--;
-              $("#guessesRem").text(guess.toString());
-            if(guess == 0){
-                $(".modal-title").text("Sorry!");
-                $(".modal-body").text("You lost! Let's play again, or cancel");
-                $("#introModal").css("display", "block");
-              }
-            }
-            myPickTxt.textContent = letter; //134 console log error
-            used.push(letter); //135 console log error
-            prevGuesses.textContent = used.join(" ");
-    }
 
 });
     
