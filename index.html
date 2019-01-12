@@ -88,12 +88,14 @@
     $("#startBtn").on("click", function() {
         $("#startBtn").hide();
         $("#timerDiv").html("<h2 class='text-center'>" + timerNum + "</h2>");
-        $("#quesDiv").append("<h2 class='text-center'>" + trivQues[0].ques + "</h2>");
-        $("#ansDiv").append("<h2 class='text-center'>" + trivQues[0].ans[a] + "</h2>");
 
-        // for (i=0; i<trivQues.length; i++){
-        //     $("#ansDiv").append("<h2 class='text-center'>" + trivQues[i].ques + "</h2>");
-        // }
+
+        $("#quesDiv").append("<h2 class='text-center'>" + trivQues[0].ques + "</h2>");
+
+        var answerString = `<div class='ans' id='a'>a: ${trivQues[0].ans.a}</div> <div class='ans'  id='b'> b: ${trivQues[0].ans.b}</div> <div class='ans' id='c'>c: ${trivQues[0].ans.c}</div>`
+
+        $("#ansDiv").append(answerString);
+
         run();
     });
     
@@ -126,26 +128,14 @@
 
 });
     
-$(".btn-primary").on("click", function(){
-          correctPickCount = 0;
-          guess = 10;
-          ourWord.length = 0;
-          used.length = 0;
-
-          $("#myPickTxt").text("");
-          $("#guessesRem").text(guess.toString());
-          $("#prevGuesses").text(used.toString());
-          rWord = words[Math.floor(Math.random() * words.length)];
-          for (var i = 0; i < rWord.length; i++) {
-              ourWord.push("_");
-          }
-          $("#hangWord").text(ourWord.join(" "));
-          $("#introModal").css("display", "none");
-          console.log("Here's the secret word: " + rWord);
-        });
-        $(".btn-secondary").on("click", function(){
-          window.location.href("https://www.msn.com/");
-        });
+$(".ans").on("click", function(){
+  var guessAns = $(this).attr("id");
+  if(guessAns == trivQues[0].correctAnswer){
+      alert("you're right");
+  } else {
+    alert("you're wrong!");
+  }
+});
 
       </script>
    </body>
