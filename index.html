@@ -19,7 +19,6 @@
 <title>It's Trivia!</title>
 </head>
 <body>
-
       <div class="container">
         <div class="row">
           <div class="col-md-12">
@@ -50,26 +49,35 @@
 
     <script type="text/javascript">
 
-      var trivQues = {
-          1 : {
+      var trivQues = [
+          {
             ques: "How many electrons does a hydrogen atom have?",
-            ans: "a: 1",
-            wrongAns1: "b: 8",
-            wrongAns2: "c: 20"
+            ans: {
+              a: '1',
+              b: '8',
+              c: '20'
+            },
+            correctAnswer: 'a'
           },
-          2 : {
+          {
             ques: "A blunderbuss is an obsolete type of what?",
-            ans: "a: firearm",
-            wrongAns1: "b: building",
-            wrongAns2: "c: movie"
+            ans: {
+              a: "firearm",
+              b: "building",
+              c: "movie"
+            },
+            correctAnswer: 'a'
           },
-          3 : {
+          {
             ques: "question 3?",
-            ans: "ans3",
-            wrongAns1: "wrong1",
-            wrongAns2: "wrong2"
+            ans: {
+                a: "ans1",
+                b: "ans2",
+                c: "ans3",
+            },
+            correctAnswer: 'c'
           }
-        }
+        ];
 
       // VARIABLES and functions for timer
       var intervalId;
@@ -80,29 +88,13 @@
     $("#startBtn").on("click", function() {
         $("#startBtn").hide();
         $("#timerDiv").html("<h2 class='text-center'>" + timerNum + "</h2>");
-        
-        $("#quesDiv").html("<h2 class='text-center'>" + JSON.stringify(trivQues[currQues].ques) + "</h2>");
+        $("#quesDiv").append("<h2 class='text-center'>" + trivQues[0].ques + "</h2>");
+        $("#ansDiv").append("<h2 class='text-center'>" + trivQues[0].ans[a] + "</h2>");
+
+        // for (i=0; i<trivQues.length; i++){
+        //     $("#ansDiv").append("<h2 class='text-center'>" + trivQues[i].ques + "</h2>");
+        // }
         run();
-
-        for (var key in trivQues){
-          if(trivQues.hasOwnProperty(key)){
-            $("#ansDiv").append("<h2 class='text-center'>" + JSON.stringify(trivQues[1].ques) + "</h2>");
-          }
-        }
-        // for(var key in trivQues){
-        //   if(trivQues.hasOwnProperty(key)){
-        //     $("#quesDiv").html("<h2 class='text-center'>" + JSON.stringify(trivQues[1].ques) + "</h2>");
-        //     //$("#ansDiv").html("<h2 class='text-center'>" + timerNum + "</h2>");
-        //     run();
-        //   }
-        // }
-
-        // for (var key in trivQues) {
-        //     if (trivQues.hasOwnProperty(key)) {
-        //         console.log(key + " -> " + JSON.stringify(trivQues[key].ques));
-        //     }
-        // }
-
     });
     
     function run() {
