@@ -13,7 +13,7 @@
 
     <link rel="stylesheet" href="assets/css/style.css">
 
-    <script type="text/javascript" src="assets/js/game.js"></script>
+    <script type="text/javascript" src="assets/javascript/app.js"></script>
 
 
 <title>It's Trivia!</title>
@@ -49,93 +49,130 @@
 
     <script type="text/javascript">
 
-      var trivQues = [
-          {
-            ques: "How many electrons does a hydrogen atom have?",
-            ans: {
-              a: '1',
-              b: '8',
-              c: '20'
-            },
-            correctAnswer: 'a'
-          },
-          {
-            ques: "A blunderbuss is an obsolete type of what?",
-            ans: {
-              a: "firearm",
-              b: "building",
-              c: "movie"
-            },
-            correctAnswer: 'a'
-          },
-          {
-            ques: "question 3?",
-            ans: {
-                a: "ans1",
-                b: "ans2",
-                c: "ans3",
-            },
-            correctAnswer: 'c'
-          }
-        ];
-
-      // VARIABLES and functions for timer
-      var intervalId;
-      var timerNum = 30;
-      var clockRunning = false;
-      var currQues = 1;
-
-    $("#startBtn").on("click", function() {
-        $("#startBtn").hide();
-        $("#timerDiv").html("<h2 class='text-center'>" + timerNum + "</h2>");
-
-
-        $("#quesDiv").append("<h2 class='text-center'>" + trivQues[0].ques + "</h2>");
-
-        var answerString = `<div class='ans' id='a'>a: ${trivQues[0].ans.a}</div> <div class='ans'  id='b'> b: ${trivQues[0].ans.b}</div> <div class='ans' id='c'>c: ${trivQues[0].ans.c}</div>`
-
-        $("#ansDiv").append(answerString);
-
-        run();
-    });
-    
-    function run() {
-      clearInterval(intervalId);
-      intervalId = setInterval(decrement, 1000);
+var trivQues = [
+    {
+      ques: "How many electrons does a hydrogen atom have?",
+      ans: {
+        a: '1',
+        b: '8',
+        c: '20'
+      },
+      correctAnswer: 'a'
+    },
+    {
+      ques: "A blunderbuss is an obsolete type of what?",
+      ans: {
+        a: "firearm",
+        b: "building",
+        c: "movie"
+      },
+      correctAnswer: 'a'
+    },
+    {
+      ques: "How much does homework suck?",
+      ans: {
+          a: "a little bit",
+          b: "a lot",
+          c: "more than anything",
+      },
+      correctAnswer: 'c'
     }
+  ];
 
-    //  The decrement function.
-    function decrement() {
+// VARIABLES and functions for timer
+var intervalId;
+var timerNum = 30;
+var clockRunning = false;
+var currQues = 0;
+var wrongAns = 0;
+var rightAns = 0;
+var answerString;
 
-      timerNum--;
-      $("#timerDiv").html("<h2 class='text-center'>" + timerNum + "</h2>");
+$("#startBtn").on("click", function() {
+  $("#startBtn").hide();
+  $("#timerDiv").html("<h2 class='text-center'>" + timerNum + "</h2>");
+  $("#quesDiv").append("<h2 class='text-center'>" + trivQues[currQues].ques + "</h2>");
 
-      if (timerNum === 0) {
-        alert("Time's Up!");
-      }
-    }
-    
-    function start() {
+  answerString = `<div class='ans' id='a' onclick='myGuess("a");'><h3 class='text-center'>a: ${trivQues[currQues].ans.a}</h3></div> <div class='ans'  id='b' onclick='myGuess("b");'><h3 class='text-center'> b: ${trivQues[0].ans.b}</h3></div> <div class='ans' id='c' onclick='myGuess("c");'><h3 class='text-center'>c: ${trivQues[0].ans.c}</h3></div>`
 
-        if (!clockRunning) {
-          intervalId = setInterval(count, 1000);
-          clockRunning = true;
-        }
-      }
-      
-      $(document).ready(function(){
-
-
+  $("#ansDiv").append(answerString);
+  run();
 });
-    
-$(".ans").on("click", function(){
-  var guessAns = $(this).attr("id");
-  if(guessAns == trivQues[0].correctAnswer){
-      alert("you're right");
-  } else {
-    alert("you're wrong!");
+
+function run() {
+clearInterval(intervalId);
+intervalId = setInterval(decrement, 1000);
+clockRunning = true;
+
+
+}
+
+function stop() {
+clearInterval(intervalId);
+clockRunning = false;
+}
+
+function decrement() {
+timerNum--;
+$("#timerDiv").html("<h2 class='text-center'>" + timerNum + "</h2>");
+
+if (timerNum === 0) {
+    timerNum = 3;
+    $("#timerDiv").hide();
+    $("#quesDiv").html("<h3 class='text-center'>Time's up!</h3>");
+    $("#ansDiv").html("<h3 class='text-center'>The correct answer is " + trivQues[currQues].correctAnswer + "</h3>");
+    currQues++;
+    if(currQues > 3){
+      $("#quesDiv").html("<h3 class='text-center'>Game over. Thanks for playing!</h3>");
+      $("#ansDiv").html("<h3 class='text-center'>Correct answers: " + rightAns + "</h3>");
+      $("#ansDiv").append("<h3 class='text-center'>Wrong answers: " + wrongAns + "</h3>");
+      stop();
+    } else {
+      timerNum = 30
+      nextQues();
+
+    }
   }
-});
+}
+
+
+function nextQues(){
+if(currQues > 3){
+  $("#timerDiv").hide();
+    $("#quesDiv").html("<h3 class='text-center'>Game over. Thanks for playing!</h3>");
+    $("#ansDiv").html("<h3 class='text-center'>Correct answers: " + rightAns + "</h3>");
+    $("#ansDiv").append("<h3 class='text-center'>Wrong answers: " + wrongAns + "</h3>");
+    stop();
+  } else {
+    timerNum = 30;
+    $("#timerDiv").show();
+    $("#timerDiv").html("<h2 class='text-center'>" + timerNum + "</h2>");
+    $("#quesDiv").html("<h2 class='text-center'>" + trivQues[currQues].ques + "</h2>");
+
+    answerString = `<div class='ans' id='a' onclick='myGuess("a");'><h3 class='text-center'>a: ${trivQues[currQues].ans.a}</h3></div> <div class='ans'  id='b' onclick='myGuess("b");'><h3 class='text-center'> b: ${trivQues[currQues].ans.b}</h3></div> <div class='ans' id='c' onclick='myGuess("c");'><h3 class='text-center'>c: ${trivQues[currQues].ans.c}</h3></div>`
+
+    $("#ansDiv").html(answerString);
+  }
+}
+
+function myGuess(guess){
+    console.log(guess + ' ' + trivQues[currQues].correctAnswer);
+    if(guess == trivQues[currQues].correctAnswer){
+      $("#quesDiv").html("<h3 class='text-center'>you're right!</h3>");
+      $("#ansDiv").html("");
+      $("#timerDiv").hide();
+      timerNum = 3;
+      rightAns++;
+      run();
+    } else {
+      $("#quesDiv").html("<h3 class='text-center'>you're wrong!</3>");
+      $("#ansDiv").html("<h3 class='text-center'>The correct answer is " + trivQues[currQues].correctAnswer + "</h3>");
+      $("#timerDiv").hide();
+      timerNum = 3;
+      wrongAns++;
+      run();
+    }
+  }
 
       </script>
    </body>
